@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Amor por [Nome Dela]</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="Index.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a href="Index.html" class="logo">
+            <i class="fas fa-heart"></i> Iago
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="memories.html">Nossas Memórias</a></li>
+            <li><a href="gallery.html">Galeria</a></li>
+            <li><a href="love-letter.html">Carta de Amor</a></li>
+            <li><a href="reasons.html">Razões que te Amo</a></li>
+            <li><a href="future.html">Nossos Planos</a></li>
+        </ul>
+        <div class="hamburger">
+            <i class="fas fa-bars"></i>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Isadora, Meu Amor</h1>
+            <p>Este site foi criado com todo o meu carinho para você</p>
+            <a href="#about" class="btn btn-primary">Nossa História</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section">
+        <div class="section-title">
+            <h2>Nossa Jornada</h2>
+        </div>
+        <div class="memory-grid">
+            <div class="memory-card">
+                <div class="memory-img">
+                    <img src="https://via.placeholder.com/400x300?text=Nosso+Primeiro+Encontro" alt="Nosso Primeiro Encontro">
+                </div>
+                <div class="memory-content">
+                    <p class="memory-date">[Data do primeiro encontro]</p>
+                    <h3 class="memory-title">Nosso Primeiro Encontro</h3>
+                    <p>[Breve descrição do primeiro encontro]</p>
+                </div>
+            </div>
+            
+            <div class="memory-card">
+                <div class="memory-img">
+                    <img src="https://via.placeholder.com/400x300?text=Primeiro+Beijo" alt="Primeiro Beijo">
+                </div>
+                <div class="memory-content">
+                    <p class="memory-date">[Data do primeiro beijo]</p>
+                    <h3 class="memory-title">Nosso Primeiro Beijo</h3>
+                    <p>[Breve descrição desse momento especial]</p>
+                </div>
+            </div>
+            
+            <div class="memory-card">
+                <div class="memory-img">
+                    <img src="https://via.placeholder.com/400x300?text=Momento+Especial" alt="Momento Especial">
+                </div>
+                <div class="memory-content">
+                    <p class="memory-date">[Data do momento]</p>
+                    <h3 class="memory-title">Um Dia Inesquecível</h3>
+                    <p>[Breve descrição de um dia especial]</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Countdown Section -->
+    <section class="section" style="background: linear-gradient(135deg, rgba(255,107,107,0.1), rgba(255,142,142,0.1));">
+        <div class="section-title">
+            <h2>Tempo Juntos</h2>
+        </div>
+        <div style="text-align: center; max-width: 800px; margin: 0 auto;">
+            <p>Desde o dia em que nos conhecemos, cada momento ao seu lado tem sido um presente.</p>
+            
+            <div style="display: flex; justify-content: center; gap: 2rem; margin: 3rem 0; flex-wrap: wrap;">
+                <div style="text-align: center;">
+                    <div style="font-size: 3rem; font-weight: bold; color: var(--primary-color);" id="years">0</div>
+                    <div style="font-size: 1rem; text-transform: uppercase; letter-spacing: 2px;">Anos</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 3rem; font-weight: bold; color: var(--primary-color);" id="months">0</div>
+                    <div style="font-size: 1rem; text-transform: uppercase; letter-spacing: 2px;">Meses</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 3rem; font-weight: bold; color: var(--primary-color);" id="days">0</div>
+                    <div style="font-size: 1rem; text-transform: uppercase; letter-spacing: 2px;">Dias</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 3rem; font-weight: bold; color: var(--primary-color);" id="hours">0</div>
+                    <div style="font-size: 1rem; text-transform: uppercase; letter-spacing: 2px;">Horas</div>
+                </div>
+            </div>
+            
+            <p>E contando... porque quero passar toda a minha vida ao seu lado.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <h3>Para [Nome Dela], com todo o meu amor</h3>
+            <p>Este site foi criado especialmente para você, para celebrar nosso amor e todos os momentos que compartilhamos.</p>
+            <ul class="footer-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="memories.html">Memórias</a></li>
+                <li><a href="gallery.html">Galeria</a></li>
+                <li><a href="love-letter.html">Carta</a></li>
+                <li><a href="reasons.html">Razões</a></li>
+                <li><a href="future.html">Futuro</a></li>
+            </ul>
+            <div class="heart-btn">
+                <i class="fas fa-heart"></i>
+            </div>
+            <p>© <span id="year"></span> - Iago - Todos os direitos reservados ao meu coração</p>
+        </div>
+    </footer>
+
+    <script src="index.js"></script>
+</body>
+</html>
