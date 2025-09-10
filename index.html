@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ranking com Cronômetro 2.0</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        /* Animações Keyframes */
+        @keyframes pulsar {
+            0% { text-shadow: 1px 1px 3px rgba(33, 150, 243, 0.2), 0 0 0px rgba(33, 150, 243, 0.2); }
+            50% { text-shadow: 1px 1px 5px rgba(33, 150, 243, 0.4), 0 0 15px rgba(33, 150, 243, 0.4); }
+            100% { text-shadow: 1px 1px 3px rgba(33, 150, 243, 0.2), 0 0 0px rgba(33, 150, 243, 0.2); }
+        }
+
+        @keyframes novo-item-animacao {
+            0% { transform: scale(0.95); opacity: 0.5; background-color: #e3f2fd; }
+            100% { transform: scale(1); opacity: 1; background-color: inherit; }
+        }
+
+        /* Estilos Gerais */
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #2c3e50, #4ca1af); /* Gradiente mais tecnológico */
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 550px;
+            text-align: center;
+        }
+
+        h1, h2 {
+            font-weight: 700;
+            color: #2c3e50;
+        }
+        h1 { font-size: 2.2rem; margin-bottom: 25px; }
+        h2 { font-size: 1.6rem; margin-top: 30px; margin-bottom: 20px; border-bottom: 2px solid #ecf0f1; padding-bottom: 10px; }
+        
+        /* Cronômetro */
+        .stopwatch {
+            background: linear-gradient(135deg, #f5f7fa, #eef2f7);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        #display {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 3.8rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        #display.running {
+            animation: pulsar 2s infinite ease-in-out;
+            color: #2196f3;
+        }
+
+        .controls button {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1rem;
+            width: 50px;
+            height: 50px;
+            margin: 8px;
+            border: none;
+            border-radius: 50%; /* Botões circulares */
+            cursor: pointer;
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            outline: none;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .controls button:hover:not(:disabled) { transform: translateY(-3px) scale(1.05); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); }
+        .controls button:active:not(:disabled) { transform: translateY(0) scale(1); box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1); }
+        .controls button:disabled { background-color: #bdc3c7; cursor: not-allowed; box-shadow: none; transform: none; }
+
+        #startButton { background-color: #27ae60; }
+        #stopButton { background-color: #e74c3c; }
+        #resetButton { background-color: #7f8c8d; }
+
+        /* Formulário do Ranking */
+        .ranking-form { display: flex; gap: 15px; margin-bottom: 30px; align-items: center; }
+        .ranking-form input {
+            flex-grow: 1; padding: 13px; border: 2px solid #bdc3c7; border-radius: 8px; font-size: 1.05rem;
+            transition: border-color 0.3s, box-shadow 0.3s; outline: none;
+        }
+        .ranking-form input:focus { border-color: #3498db; box-shadow: 0 0 8px rgba(52, 152, 219, 0.3); }
+
+        #addButton {
+            background-color: #3498db; color: white; padding: 13px 22px; border: none; border-radius: 8px;
+            cursor: pointer; font-size: 1.05rem; transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); outline: none;
+        }
+        #addButton:hover:not(:disabled) { background-color: #2980b9; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); }
+        #addButton:disabled { background-color: #cccccc; cursor: not-allowed; box-shadow: none; transform: none; }
+        
+        /* Lista do Ranking */
+        #rankingList { list-style-type: none; padding: 0; text-align: left; border: 1px solid #ecf0f1; border-radius: 10px; overflow: hidden; }
+        #rankingList li {
+            background-color: #fdfefe; padding: 18px 25px; border-bottom: 1px solid #ecf0f1; display: flex; justify-content: space-between;
+            align-items: center; font-size: 1.15rem; transition: background-color 0.2s ease;
+        }
+        #rankingList li:last-child { border-bottom: none; }
+        #rankingList li:nth-child(even) { background-color: #f5f7f9; }
+        #rankingList li.novo-item { animation: novo-item-animacao 0.7s ease-out; }
+        #rankingList li:first-child {
+            font-weight: 700; color: #d4af37; background-color: #fffde7;
+            font-size: 1.3rem; border-left: 5px solid #fbc02d;
+        }
+        .rank-position { font-family: 'Roboto Mono', monospace; font-weight: 700; margin-right: 20px; color: #7f8c8d; min-width: 30px; }
+        #rankingList li:first-child .rank-position { color: #d4af37; }
+        .rank-name { flex-grow: 1; color: #34495e; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .rank-time {
+            font-family: 'Roboto Mono', monospace; font-weight: 600; background-color: #e3f2fd; color: #3498db;
+            padding: 7px 12px; border-radius: 6px; margin-left: 15px; min-width: 120px; text-align: right;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Botão de Limpar */
+        .ranking-header { display: flex; justify-content: space-between; align-items: center; }
+        #clearRankingButton {
+            background: none; border: 1px solid #e74c3c; color: #e74c3c; font-size: 0.8rem; padding: 5px 10px;
+            border-radius: 5px; cursor: pointer; transition: all 0.3s ease; margin-bottom: -15px;
+        }
+        #clearRankingButton:hover { background: #e74c3c; color: white; }
+
+        /* Responsividade */
+        @media (max-width: 480px) {
+            .container { padding: 25px; }
+            h1 { font-size: 1.8rem; }
+            h2 { font-size: 1.4rem; }
+            #display { font-size: 2.8rem; }
+            .controls button { width: 45px; height: 45px; font-size: 1rem; }
+            .ranking-form { flex-direction: column; gap: 10px; }
+            .ranking-form input, #addButton { width: 100%; box-sizing: border-box; }
+            #rankingList li { flex-direction: column; align-items: flex-start; padding: 15px 20px; }
+            .rank-position { margin-bottom: 5px; }
+            .rank-time { align-self: flex-end; margin-top: 10px; margin-left: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1><i class="fas fa-rocket"></i> Cronômetro & Ranking</h1>
+
+        <div class="stopwatch">
+            <div id="display">00:00:00.000</div>
+            <div class="controls">
+                <button id="startButton" title="Iniciar/Continuar"><i class="fas fa-play"></i></button>
+                <button id="stopButton" title="Parar"><i class="fas fa-pause"></i></button>
+                <button id="resetButton" title="Zerar"><i class="fas fa-undo"></i></button>
+            </div>
+        </div>
+
+        <h2><i class="fas fa-pencil-alt"></i> Adicionar ao Ranking</h2>
+        <div class="ranking-form">
+            <input type="text" id="nameInput" placeholder="Digite seu nome aqui">
+            <button id="addButton" disabled>Adicionar Tempo</button>
+        </div>
+
+        <div class="ranking-header">
+            <h2><i class="fas fa-trophy"></i> Ranking de Tempos</h2>
+            <button id="clearRankingButton" title="Limpar todo o ranking">Limpar Tudo</button>
+        </div>
+        <ol id="rankingList"></ol>
+    </div>
+
+    <script>
+        // Elementos do DOM
+        const display = document.getElementById('display');
+        const startButton = document.getElementById('startButton');
+        const stopButton = document.getElementById('stopButton');
+        const resetButton = document.getElementById('resetButton');
+        const nameInput = document.getElementById('nameInput');
+        const addButton = document.getElementById('addButton');
+        const rankingList = document.getElementById('rankingList');
+        const clearRankingButton = document.getElementById('clearRankingButton');
+
+        // Variáveis do Cronômetro
+        let startTime, updatedTime, difference, tInterval;
+        let running = false;
+        let savedTime = 0;
+
+        // Ranking (carrega do localStorage)
+        let rankingData = JSON.parse(localStorage.getItem('rankingData')) || [];
+
+        // --- LÓGICA DO CRONÔMETRO ---
+        function startTimer() {
+            if (!running) {
+                startTime = new Date().getTime() - savedTime;
+                tInterval = setInterval(updateDisplay, 10);
+                running = true;
+                display.classList.add('running');
+                updateButtonStates(true);
+            }
+        }
+
+        function stopTimer() {
+            if (running) {
+                clearInterval(tInterval);
+                savedTime = new Date().getTime() - startTime;
+                running = false;
+                display.classList.remove('running');
+                updateButtonStates(false);
+                if (savedTime > 0) nameInput.focus(); // Foco automático!
+            }
+        }
+
+        function resetTimer() {
+            clearInterval(tInterval);
+            running = false;
+            savedTime = 0;
+            display.innerHTML = "00:00:00.000";
+            display.classList.remove('running');
+            updateButtonStates(false, true);
+        }
+
+        function updateDisplay() {
+            updatedTime = new Date().getTime();
+            difference = updatedTime - startTime;
+            display.innerHTML = formatTime(difference);
+        }
+        
+        function updateButtonStates(isRunning, isReset = false) {
+            startButton.disabled = isRunning;
+            stopButton.disabled = !isRunning;
+            resetButton.disabled = isRunning || savedTime === 0;
+            addButton.disabled = isRunning || savedTime === 0;
+            if (isReset) {
+                 addButton.disabled = true;
+                 resetButton.disabled = true;
+            }
+        }
+
+        function formatTime(ms) {
+            let minutes = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
+            let seconds = Math.floor((ms % (1000 * 60)) / 1000);
+            let milliseconds = Math.floor((ms % 1000));
+            
+            minutes = minutes.toString().padStart(2, '0');
+            seconds = seconds.toString().padStart(2, '0');
+            milliseconds = milliseconds.toString().padStart(3, '0');
+
+            return `${minutes}:${seconds}.${milliseconds}`; // Formato MM:SS.ms
+        }
+        
+        // --- LÓGICA DO RANKING ---
+        function addToRanking() {
+            const name = nameInput.value.trim();
+            if (!name) { alert("Por favor, digite um nome."); return; }
+            if (savedTime === 0) { alert("O cronômetro está zerado."); return; }
+
+            const newEntry = { name: name, time: savedTime };
+            rankingData.push(newEntry);
+            rankingData.sort((a, b) => a.time - b.time);
+            
+            saveAndRenderRanking();
+            
+            const newIndex = rankingData.findIndex(item => item.time === newEntry.time && item.name === newEntry.name);
+            if (newIndex !== -1) {
+                const newLi = rankingList.children[newIndex];
+                newLi.classList.add('novo-item'); // Adiciona classe para animação
+                setTimeout(() => newLi.classList.remove('novo-item'), 700);
+            }
+
+            nameInput.value = "";
+            resetTimer();
+        }
+
+        function renderRanking() {
+            rankingList.innerHTML = "";
+            if (rankingData.length === 0) {
+                rankingList.innerHTML = `<li><span class="rank-name">Nenhum tempo registrado. Seja o primeiro!</span></li>`;
+                clearRankingButton.style.display = 'none';
+                return;
+            }
+
+            clearRankingButton.style.display = 'block';
+            rankingData.forEach((entry, index) => {
+                const li = document.createElement('li');
+                
+                const icon = index === 0 ? '<i class="fas fa-trophy"></i> ' : '';
+                li.innerHTML = `
+                    <span class="rank-position">${icon}${index + 1}º</span>
+                    <span class="rank-name">${entry.name}</span>
+                    <span class="rank-time">${formatTime(entry.time)}</span>
+                `;
+                rankingList.appendChild(li);
+            });
+        }
+        
+        function saveAndRenderRanking() {
+            localStorage.setItem('rankingData', JSON.stringify(rankingData));
+            renderRanking();
+        }
+
+        function clearRanking() {
+            if (confirm("Você tem certeza que deseja limpar todo o ranking? Esta ação não pode ser desfeita.")) {
+                rankingData = [];
+                saveAndRenderRanking();
+            }
+        }
+
+        // --- EVENT LISTENERS ---
+        startButton.addEventListener('click', startTimer);
+        stopButton.addEventListener('click', stopTimer);
+        resetButton.addEventListener('click', resetTimer);
+        addButton.addEventListener('click', addToRanking);
+        clearRankingButton.addEventListener('click', clearRanking);
+        nameInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' && !addButton.disabled) {
+                addToRanking();
+            }
+        });
+
+        // --- INICIALIZAÇÃO ---
+        renderRanking();
+        updateButtonStates(false, true);
+
+    </script>
+
+</body>
+</html>
